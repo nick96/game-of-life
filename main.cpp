@@ -9,6 +9,7 @@
 
 #define SCREEN_WIDTH (800)
 #define SCREEN_HEIGHT (600)
+#define DIV (50)
 
 #define FONT ("/usr/share/texmf/fonts/opentype/public/lm/lmsans17-regular.otf")
 
@@ -22,9 +23,10 @@ int main(int argc, char *argv[]) {
         auto seed = std::chrono::high_resolution_clock::now()
                         .time_since_epoch()
                         .count();
-        auto rand_gen = std::bind(std::uniform_int_distribution<int>(20, 70),
-                                  std::mt19937(seed));
-        GameOfLife gol(rand_gen(), 10, 10);
+        auto rand_gen = std::bind(
+            std::uniform_int_distribution<int>(DIV / 5, DIV*DIV - (DIV / 5)),
+            std::mt19937(seed));
+        GameOfLife gol(rand_gen(), DIV, DIV);
         bool welcome_screen = true;
         sf::Clock clock;
 
@@ -50,8 +52,8 @@ int main(int argc, char *argv[]) {
                                         break;
                                 case sf::Keyboard::R:
                                         if (!welcome_screen) {
-                                                gol = GameOfLife(rand_gen(), 10,
-                                                                 10);
+                                                gol = GameOfLife(rand_gen(),
+                                                                 DIV, DIV);
                                         }
                                         break;
                                 default:
@@ -104,15 +106,15 @@ void draw_gol(sf::RenderWindow *window, GameOfLife *gol) {
 
         draw_grid(window);
 
-        for (int y = 0; y < 10; y++) {
-                for (int x = 0; x < 10; x++) {
+        for (int y = 0; y < DIV; y++) {
+                for (int x = 0; x < DIV; x++) {
                         if (board[x][y]) {
                                 int screen_x, screen_y;
                                 sf::RectangleShape rect(
-                                    sf::Vector2f(size.x / 10, size.y / 10));
+                                    sf::Vector2f(size.x / DIV, size.y / DIV));
 
-                                screen_x = x * (size.x / 10);
-                                screen_y = y * (size.y / 10);
+                                screen_x = x * (size.x / DIV);
+                                screen_y = y * (size.y / DIV);
 
                                 rect.setFillColor(sf::Color::White);
                                 rect.setPosition(
@@ -127,7 +129,8 @@ void draw_grid(sf::RenderWindow *window) {
         sf::Vector2u size = window->getSize();
 
         // Draw vertical lines in grid
-        for (unsigned int col = size.x / 10; col < size.x; col += size.x / 10) {
+        for (unsigned int col = size.x / DIV; col < size.x;
+             col += size.x / DIV) {
                 sf::Vertex line[] = {
                     sf::Vertex(sf::Vector2f(col, 0)),
                     sf::Vertex(sf::Vector2f(col, size.y)),
@@ -136,7 +139,8 @@ void draw_grid(sf::RenderWindow *window) {
         }
 
         // Draw horizontal lines in grid
-        for (unsigned int row = size.y / 10; row < size.y; row += size.y / 10) {
+        for (unsigned int row = size.y / DIV; row < size.y;
+             row += size.y / DIV) {
                 sf::Vertex line[] = {
                     sf::Vertex(sf::Vector2f(0, row)),
                     sf::Vertex(sf::Vector2f(size.x, row)),
