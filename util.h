@@ -7,8 +7,8 @@
 #ifndef Util_h
 #define Util_h
 
-#include <string>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
