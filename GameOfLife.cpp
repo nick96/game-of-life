@@ -139,3 +139,11 @@ void GameOfLife::kill_cell(int x, int y) {
 }
 
 std::vector<std::vector<bool>> GameOfLife::get_board() { return board; }
+
+int GameOfLife::get_height() {
+	return height;
+}
+
+int GameOfLife::get_width() {
+	return width;
+}

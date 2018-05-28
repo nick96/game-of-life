@@ -26,6 +26,9 @@ class GameOfLife {
 	void play(void);
 	std::vector<std::vector<bool>> get_board();
 	void step();
+	bool is_alive(void);
+	int get_height();
+	int get_width();
 
       private:
 	std::vector<std::vector<bool>> board;
@@ -41,7 +44,6 @@ class GameOfLife {
 	void resurect_cell(int x, int y);
 	void kill_cell(int x, int y);
 	int get_neighbour_count(int x, int y);
-	bool is_alive(void);
 	int get_nsteps(void);
 };
 #endif

@@ -1,14 +1,22 @@
 CPP=g++
-CFLAGS=-Wall
-LDFLAGS=$(shell pkg-config --libs sfml-all)
-OBJ=main.o GameOfLife.o
-EXE=gol
+CFLAGS=-Wall -Wextra -std=c++17
+SFML_LDFLAGS=$(shell pkg-config --libs sfml-all)
+NCURSES_LDFLAGS=-lncurses
+SFML_OBJ=sfml_main.o GameOfLife.o
+NCURSES_OBJ=ncurses_main.o GameOfLife.o util.o NcursesCpp.o
+SFML_EXE=gol_sfml
+NCURSES_EXE=gol_ncurses
 
-$(EXE): $(OBJ)
-	$(CPP) $(OBJ) -o $(EXE) $(LDFLAGS)
+all: $(SFML_EXE) $(NCURSES_EXE)
 
-GameOfLife.o: $(OBJ)
-	$(CPP) $(CFLAGS) -c GameOfLife.cpp
+$(SFML_EXE): $(SFML_OBJ)
+	$(CPP) $(SFML_OBJ) $(CFLAGS) -o $(SFML_EXE) $(SFML_LDFLAGS)
+
+$(NCURSES_EXE): $(NCURSES_OBJ)
+	$(CPP) $(NCURSES_OBJ) $(CFLAGS) -o $(NCURSES_EXE) $(NCURSES_LDFLAGS)
+
+%.o: $.cpp
+	$(CPP) -c $(CFLAGS) -o $*.o $*.cpp
 
 clean:
-	rm $(OBJ) $(EXE)
+	rm $(SFML_OBJ) $(SFML_EXE) $(NCURSES_OBJ) $(NCURSES_EXE)
