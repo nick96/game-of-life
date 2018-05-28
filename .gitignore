@@ -1,2 +1,3 @@
 *.o
 /gol
+.cquery_cached_index/
