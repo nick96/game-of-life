@@ -1,3 +1,5 @@
 *.o
 /gol
 .cquery_cached_index/
+gol-sfml
+gol-ncurses
