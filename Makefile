@@ -7,10 +7,7 @@ EXE=gol
 $(EXE): $(OBJ)
 	$(CPP) $(OBJ) -o $(EXE) $(LDFLAGS)
 
-main.o:
-	$(CPP) $(CFLAGS) -c main.cpp
-
-GameOfLife.o:
+GameOfLife.o: $(OBJ)
 	$(CPP) $(CFLAGS) -c GameOfLife.cpp
 
 clean:

@@ -8,8 +8,8 @@
 #include "GameOfLife.h"
 
 #define SCREEN_WIDTH (800)
-#define SCREEN_HEIGHT (600)
-#define DIV (50)
+#define SCREEN_HEIGHT (800)
+#define DIV (200)
 
 #define FONT ("/usr/share/texmf/fonts/opentype/public/lm/lmsans17-regular.otf")
 
@@ -17,15 +17,16 @@ void draw_welcome_screen(sf::RenderWindow *window);
 void draw_gol(sf::RenderWindow *window, GameOfLife *gol);
 void draw_grid(sf::RenderWindow *window);
 
-int main(int argc, char *argv[]) {
+int main(void) {
         sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT),
                                 "Game of Life");
         auto seed = std::chrono::high_resolution_clock::now()
                         .time_since_epoch()
                         .count();
-        auto rand_gen = std::bind(
-            std::uniform_int_distribution<int>(DIV / 5, DIV*DIV - (DIV / 5)),
-            std::mt19937(seed));
+        auto rand_gen = std::bind(std::uniform_int_distribution<int>(
+							     DIV / 5,
+							     DIV * DIV - DIV * (DIV - 10)),
+				  std::mt19937(seed));
         GameOfLife gol(rand_gen(), DIV, DIV);
         bool welcome_screen = true;
         sf::Clock clock;
@@ -104,7 +105,7 @@ void draw_gol(sf::RenderWindow *window, GameOfLife *gol) {
         sf::Vector2u size = window->getSize();
         std::vector<std::vector<bool>> board = gol->get_board();
 
-        draw_grid(window);
+        // draw_grid(window);
 
         for (int y = 0; y < DIV; y++) {
                 for (int x = 0; x < DIV; x++) {
